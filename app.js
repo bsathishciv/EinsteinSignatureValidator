@@ -36,7 +36,7 @@ app.listen(port, function () {
 
 async function getRecord(){
 
-    return new Promise((resolve, reject){
+    return new Promise((resolve, reject) => {
         const uri = "mongodb+srv://sathish_dev:Einstein123@einsteintestcluster0-rz7yb.gcp.mongodb.net/test?ssl=true";
         const client = new MongoClient(uri, {useNewUrlParser:true});
 
