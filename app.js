@@ -1,23 +1,61 @@
 // exports
 const express = require('express');
-const MongoClient = require('mongodb').MongoClient;
+const bodyParser = require('body-parser');
+const MDB = require('./einstein/SignStoreDAO');
+const BatchService = require('./einstein/BatchService');
 
 // main
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 5000;
 let app = express();
 let router = express.Router();
 
-router.use(
-    function(req, res, next) {
+app.use(bodyParser.json()); // to parse the post body
+app.use(bodyParser.urlencoded({ extended: true }));
 
-    }
-);
+app.get('/', async function (req, res) {
 
-router.get('/', async function (req, res) {
+    const db = new MDB();
+    db.setDb('SignatureStatus_db');
+    db.setCollection('SignatureStatus_c');
+    await db.connect();
+    const result = await db.query();
     
- res.send(await getRecord());
+    res.status(200).json(result);
+
 });
 
+app.post('/', async function (req, res) {
+        
+    try {
+
+        if ( ! req.body || Object.keys(req.body).length == 0 ) {
+            res.status(400).send('ERROR: empty response');
+            return;
+        }
+
+        let result = await new BatchService(
+            req.body.records
+            ).start();
+        
+        if ( result ) {
+            res.status(200).json(result);
+            res.end();
+        } else {
+            res.status(500).send('ERROR: Could not save records to DB, please try again.');
+        }
+
+    } catch ( err ) {
+
+        //console.log(err);
+
+        res.send(err);
+
+    }
+    
+
+});
+
+/*
 router.get('/status:batchId', function (req, res) {
     
     if ( req.params && req.param.batchId ) {
@@ -29,38 +67,7 @@ router.get('/status:batchId', function (req, res) {
 router.post('/validate', function (req, res) {
     
 });
-
+*/
 app.listen(port, function () {
  console.log(`Example app listening on port !`);
 });
-
-async function getRecord(){
-
-    return new Promise((resolve, reject) => {
-        const uri = "mongodb+srv://sathish_dev:Einstein123@einsteintestcluster0-rz7yb.gcp.mongodb.net/test?ssl=true";
-        const client = new MongoClient(uri, {useNewUrlParser:true});
-
-        client.connect((err, x) => {
-            if ( !err ) {
-                const collection = x.db("SignatureStatus_db").collection("SignatureStatus_c");
-                let res = [];
-                collection.find(
-                    {
-                        ObjectName : 'Call__c'
-                    }
-                ).forEach((doc) => {
-                    res.push(doc);
-                });
-
-                resolve(doc);
-
-                //console.log(collection.);
-                client.close();
-            } else {
-                reject(err);
-            }
-        
-        });
-    });
-
-}
