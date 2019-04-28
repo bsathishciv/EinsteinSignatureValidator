@@ -9,7 +9,7 @@ let port = process.env.PORT || 5000;
 let app = express();
 let router = express.Router();
 
-app.use(bodyParser.json({strict:false})); // to parse the post body
+app.use(bodyParser.json({strict:false, type : 'text/plain'})); // to parse the post body
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', async function (req, res) {
@@ -29,6 +29,9 @@ app.post('/', async function (req, res) {
     try {
         
         console.log('---->'+req.body);
+
+
+
         console.log('---->'+req.body.params);
 
         if ( ! req.body || !req.body.records || Object.keys(req.body).length == 0 ) {
