@@ -37,7 +37,7 @@ app.use(function(req, res, next){
 app.post('/', async function (req, res) {
         
     try {
-        
+        console.log(req.jsonBody);
         let obj = req.jsonBody;
 
         if ( ! obj || ! obj.records || Object.keys(obj).length == 0 ) {
