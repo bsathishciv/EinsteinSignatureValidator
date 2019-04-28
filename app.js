@@ -9,8 +9,8 @@ let port = process.env.PORT || 5000;
 let app = express();
 let router = express.Router();
 
-app.use(bodyParser.json({strict:false, type : 'text/plain'})); // to parse the post body
-//app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.text({type : 'text/plain'})); // to parse the post body
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', async function (req, res) {
 
@@ -32,9 +32,9 @@ app.post('/', async function (req, res) {
 
         console.log(Object.keys(req.body));
 
-        console.log('---->'+req.body.params);
+        console.log('---->'+JSON.parse(req.body));
 
-        if ( ! req.body || !req.body.records || Object.keys(req.body).length == 0 ) {
+        /*if ( ! req.body || !req.body.records || Object.keys(req.body).length == 0 ) {
             res.status(400).send('ERROR: empty response');
             return;
         }
@@ -48,7 +48,7 @@ app.post('/', async function (req, res) {
             res.end();
         } else {
             res.status(500).send('ERROR: Could not save records to DB, please try again.');
-        }
+        }*/
 
     } catch ( err ) {
 
