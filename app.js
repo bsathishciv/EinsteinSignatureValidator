@@ -38,20 +38,15 @@ app.post('/', async function (req, res) {
         
     try {
         
-        console.log('---->'+req.rawBody);
-        console.log('---->'+req.jsonBody);
+        let obj = req.jsonBody;
 
-        console.log(Object.keys(req.body));
-
-        console.log('---->'+JSON.parse(req.body));
-
-        /*if ( ! req.body || !req.body.records || Object.keys(req.body).length == 0 ) {
+        if ( ! obj || ! obj.records || Object.keys(obj).length == 0 ) {
             res.status(400).send('ERROR: empty response');
             return;
         }
 
         let result = await new BatchService(
-            req.body.records
+            obj.records
             ).start();
         
         if ( result ) {
@@ -59,7 +54,7 @@ app.post('/', async function (req, res) {
             res.end();
         } else {
             res.status(500).send('ERROR: Could not save records to DB, please try again.');
-        }*/
+        }
 
     } catch ( err ) {
 
