@@ -30,7 +30,7 @@ app.post('/', async function (req, res) {
         
         console.log('---->'+req.body);
 
-
+        console.log(Object.keys(req.body));
 
         console.log('---->'+req.body.params);
 
