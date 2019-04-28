@@ -28,6 +28,8 @@ app.post('/', async function (req, res) {
         
     try {
         
+        console.log('---->'+req.body);
+        console.log('---->'+req.body.params);
 
         if ( ! req.body || !req.body.records || Object.keys(req.body).length == 0 ) {
             res.status(400).send('ERROR: empty response');
