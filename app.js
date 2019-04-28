@@ -27,7 +27,7 @@ app.get('/', async function (req, res) {
 app.post('/', async function (req, res) {
         
     try {
-
+        console.log(req.body);
         if ( ! req.body || Object.keys(req.body).length == 0 ) {
             res.status(400).send('ERROR: empty response');
             return;
