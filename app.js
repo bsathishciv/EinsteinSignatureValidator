@@ -10,7 +10,7 @@ let app = express();
 let router = express.Router();
 
 app.use(bodyParser.json({strict:false, type : 'text/plain'})); // to parse the post body
-app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', async function (req, res) {
 
