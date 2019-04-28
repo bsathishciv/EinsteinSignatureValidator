@@ -24,11 +24,22 @@ app.get('/', async function (req, res) {
 
 });
 
+app.use(function(req, res, next){
+    var data = "";
+    req.on('data', function(chunk){ data += chunk})
+    req.on('end', function(){
+        req.rawBody = data;
+        req.jsonBody = JSON.parse(data);
+        next();
+    })
+ })
+
 app.post('/', async function (req, res) {
         
     try {
         
-        console.log('---->'+req.body);
+        console.log('---->'+req.rawBody);
+        console.log('---->'+req.jsonBody);
 
         console.log(Object.keys(req.body));
 
