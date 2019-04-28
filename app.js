@@ -28,15 +28,15 @@ app.post('/', async function (req, res) {
         
     try {
         
-        req.body = JSON.parse(req.body);
+        let bodyObj = JSON.parse(req.body);
 
-        if ( ! req.body || Object.keys(req.body).length == 0 ) {
+        if ( ! bodyObj || Object.keys(bodyObj).length == 0 ) {
             res.status(400).send('ERROR: empty response');
             return;
         }
 
         let result = await new BatchService(
-            req.body.records
+            bodyObj.records
             ).start();
         
         if ( result ) {
