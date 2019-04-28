@@ -9,8 +9,8 @@ let port = process.env.PORT || 5000;
 let app = express();
 let router = express.Router();
 
-app.use(bodyParser.json()); // to parse the post body
-app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.json()); // to parse the post body
+//app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', async function (req, res) {
 
@@ -27,7 +27,9 @@ app.get('/', async function (req, res) {
 app.post('/', async function (req, res) {
         
     try {
-        console.log(req.body);
+        
+        req.body = JSON.parse(req.body);
+
         if ( ! req.body || Object.keys(req.body).length == 0 ) {
             res.status(400).send('ERROR: empty response');
             return;
