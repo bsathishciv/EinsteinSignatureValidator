@@ -27,6 +27,7 @@ module.exports = function(agenda) {
                             if ( match ) {
 
                                 doc.MatchAccuracy = match.probability;
+                                doc.SignatureBase64 = '';
                                 if ( match.probability > 0.9 ) {
                                     doc.Status = 'VALID';
                                 } else {
@@ -38,6 +39,7 @@ module.exports = function(agenda) {
                                 // update in mongo
                                 console.log(doc);
                                 await db.update([doc]);
+                                //await db.delete([doc]);
                             }
 
                             //post to salesforce
