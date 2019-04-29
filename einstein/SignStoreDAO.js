@@ -68,9 +68,11 @@ class MDB {
                     }
 
                     if ( records.length == 1 ) {
+                        console.log('1');
                         let result = await this.mConnection.insertOne(records[0]);
                         resolve(result.insertedId);
                     } else {
+                        console.log('2');
                         let result = await this.mConnection.insertAll(records);
                         resolve(result.insertedIds);
                     }
@@ -78,6 +80,7 @@ class MDB {
                     reject('INSERT_ERROR: Failed to insert records');
 
                 } catch(err) {
+                    console.log(err);
                     reject('INSERT_ERROR: '+err);
                 }
             }

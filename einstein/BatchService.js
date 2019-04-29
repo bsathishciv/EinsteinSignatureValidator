@@ -20,7 +20,7 @@ class BatchService {
                 )
             );
         }
-
+        
         this.recordArr = SignatureStatusArray;
 
     }
@@ -30,18 +30,17 @@ class BatchService {
         try {
             console.log(' --------- EINSTEIN APP: Batch Initiated...');
             let db = new MDB();
-            //console.log('a');
+
             db.setDb('SignatureStatus_db');
             db.setCollection('SignatureStatus_c');
-            //console.log('b');
+
             await db.connect();
-            //console.log('c');
+
             let result = await db.insert(this.recordArr);
-            //console.log('==========================================');
 
             let ag = new Agendax();
             await ag.connection();
-            //console.log(result);
+
             ag.setData([result]);
             ag.loadJob('PredictJob');
             ag.startx(); // runs job in background process
