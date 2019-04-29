@@ -58,8 +58,8 @@ class EinsteinRequest {
 
                         //console.log('<<>> '+ resp.statusCode);
                         if ( body ) {
-                            await this.processData(body);
-                            resolve();
+                            
+                            resolve(await this.processData(body));
                         }
 
                     } else if ( resp && resp.statusCode == 401 ) {
@@ -115,12 +115,10 @@ class EinsteinRequest {
         } else if ( this.context == 'PREDICT' ) {
 
             const body = JSON.parse(chunk);
-            console.log(body);
             if (! body.probabilities || body.probabilities.length == 0){
                 return 0;
             }
-            console.log(body.probabilities);
-            console.log(body.probabilities[0]);
+
             return body.probabilities[0];
             
         }
