@@ -17,7 +17,7 @@ class Agendax {
 
         return new Promise( async (resolve, reject ) => {
 
-            console.log('EINSTEIN APP: Setting Agenda');
+            console.log(' --------- EINSTEIN APP: Setting Agenda');
 
             this.agenda = await new Agenda(
                 { db: 
@@ -59,7 +59,7 @@ class Agendax {
 
     loadJob(type) {
 
-        console.log('EINSTEIN APP: loading jobs into Agenda...');
+        console.log(' --------- EINSTEIN APP: loading jobs into Agenda...');
         this.types.push(type);
         try {
             require('./jobs/PredictJob')(this.agenda);

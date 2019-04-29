@@ -6,7 +6,7 @@ module.exports = function(agenda) {
 
 
         agenda.define('PredictJob', async function(job, done) {
-            console.log('EINSTEIN APP: Starting Agenda queue processing...');
+            console.log(' --------- EINSTEIN APP: Starting Agenda queue processing...');
                 // Connect to the db
                 const db = new MDB();
                 db.setDb('SignatureStatus_db');
@@ -15,17 +15,17 @@ module.exports = function(agenda) {
 
                 const result = await db.query({ _id: { $in: job.attrs.data.xdata }});
 
-                result.forEach(
+                await result.forEach(
                     async (doc) => {
 
                         try {
-                            console.log('EINSTEIN APP: Predicting signature of Account: '+doc.AccountId+ ' on '+doc.ObjectName+ ' with Id: ' + doc.ObjectId);
+                            console.log(' --------- EINSTEIN APP: Predicting signature of Account: '+doc.AccountId+ ' on '+doc.ObjectName+ ' with Id: ' + doc.ObjectId);
                             
                             let service = new EinsteinService();
                             let match = await service.predict(doc);
 
                             if ( match ) {
-                                console.log('EINSTEIN APP: Match found...');
+                                console.log(' --------- EINSTEIN APP: Match found...');
                                 doc.MatchAccuracy = match.probability;
                                 doc.SignatureBase64 = '';
                                 if ( match.probability > 0.9 ) {
@@ -40,7 +40,7 @@ module.exports = function(agenda) {
                                 //await db.delete([doc]);
                             } else {
 
-                                console.log('EINSTEIN APP: Match NOT found...'); 
+                                console.log(' --------- EINSTEIN APP: Match NOT found...'); 
                                 doc.MatchAccuracy = 0;
                                 doc.SignatureBase64 = '';
                                 doc.Status = 'INVALID';
@@ -59,7 +59,7 @@ module.exports = function(agenda) {
                         
                     }
                 );
-                console.log('EINSTEIN APP: Batch processing completed...'); 
+                console.log(' --------- EINSTEIN APP: Batch processing completed...'); 
                 done();
 
         });

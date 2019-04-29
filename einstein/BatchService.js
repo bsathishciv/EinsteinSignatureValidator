@@ -28,7 +28,7 @@ class BatchService {
     async start() {
         //store collection documents in DB and callout to einstein for prediction.
         try {
-            console.log('EINSTEIN APP: Batch Initiated...');
+            console.log(' --------- EINSTEIN APP: Batch Initiated...');
             let db = new MDB();
             //console.log('a');
             db.setDb('SignatureStatus_db');
@@ -45,7 +45,7 @@ class BatchService {
             ag.setData([result]);
             ag.loadJob('PredictJob');
             ag.startx(); // runs job in background process
-            console.log('EINSTEIN APP: Batch Queued...');
+            console.log(' --------- EINSTEIN APP: Batch Queued...');
             return result;
 
         } catch ( err ) {

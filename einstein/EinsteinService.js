@@ -25,7 +25,6 @@ class EinsteinService {
 
         let er = new EinsteinRequest(EinsteinService.URL().DETECT_URL, 'PREDICT');
         er.datax(formData);
-        console.log('message from service');
         return await er.postx();
         
     }

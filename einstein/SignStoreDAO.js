@@ -93,14 +93,14 @@ class MDB {
                     if ( doc.length == 0 ){
                         reject('UPDATE_ERROR: No records specified');
                     }
-                    console.log('EINSTEIN APP: Updating record...'); 
+                    console.log(' --------- EINSTEIN APP: Updating record...'); 
                     if ( doc.length == 1 ) {
 
                         let result = await this.mConnection.findOneAndReplace(
                             { '_id' : OID(doc[0]._id) },
                             doc[0],
                         );
-                        console.log('EINSTEIN APP: DONE Updating record...'); 
+                        console.log(' --------- EINSTEIN APP: DONE Updating record...'); 
                         resolve(result);
 
                     } 

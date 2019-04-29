@@ -37,7 +37,17 @@ app.use(function(req, res, next){
 app.post('/', async function (req, res) {
         
     try {
-        console.log(req.jsonBody);
+        console.log('**************************************************************************');
+        console.log('********  ** **       **  ********  ************  ********  ** **       **');
+        console.log('**        ** ** *     **  **             **       **        ** ** *     **');
+        console.log('**        ** **  *    **  **             **       **        ** **  *    **');
+        console.log('********  ** **   *   **  ********       **       ********  ** **   *   **');
+        console.log('**        ** **    *  **        **       **       **        ** **    *  **');
+        console.log('**        ** **     * **        **       **       **        ** **     * **');
+        console.log('********  ** **       **  ********       **       ********  ** **       **');
+        console.log('**************************************************************************');
+
+        console.log(' --------- EINSTEIN APP: Started new Batch');
         let obj = req.jsonBody;
 
         if ( ! obj || ! obj.records || Object.keys(obj).length == 0 ) {
@@ -45,24 +55,24 @@ app.post('/', async function (req, res) {
             return;
         }
 
-        console.log('EINSTEIN APP: Records verified...');
+        console.log(' --------- EINSTEIN APP: Records verified...');
 
         let result = await new BatchService(
             obj.records
             ).start();
         
         if ( result ) {
-            console.log('EINSTEIN APP: Request completed...');
+            console.log(' --------- EINSTEIN APP: Request completed...');
             res.status(200).json(result);
             res.end();
         } else {
-            console.log('EINSTEIN APP: Request error...');
+            console.log(' --------- EINSTEIN APP: Request error...');
             res.status(500).send('ERROR: Could not save records to DB, please try again.');
         }
 
     } catch ( err ) {
 
-        console.log('EINSTEIN APP: Request error...');
+        console.log(' --------- EINSTEIN APP: Request error...');
 
         res.send(err);
 
