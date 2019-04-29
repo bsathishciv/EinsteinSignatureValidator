@@ -11,11 +11,12 @@ class MDB {
 
     constructor() {
         this.configData = JSON.parse(fs.readFileSync( __dirname + '/config.json'));
-        console.log(this.configData);
+
         this.mClient = new MongoClient( this.configData.uri, { useNewUrlParser:true } );
         this.db = null;
         this.collection = null;
         this.mConnection = null;
+
     }
 
     setDb(dbName){
@@ -92,16 +93,14 @@ class MDB {
                     if ( doc.length == 0 ){
                         reject('UPDATE_ERROR: No records specified');
                     }
-
+                    console.log('EINSTEIN APP: Updating record...'); 
                     if ( doc.length == 1 ) {
-                        console.log(doc[0]);
+
                         let result = await this.mConnection.findOneAndReplace(
                             { '_id' : OID(doc[0]._id) },
                             doc[0],
                         );
-                        console.log(result.modifiedCount);
-                        console.log(result.result);
-                        console.log(result.upsertedCount);
+                        console.log('EINSTEIN APP: DONE Updating record...'); 
                         resolve(result);
 
                     } 
@@ -118,9 +117,17 @@ class MDB {
 
     async connect() {
 
-        let connection = await this.mClient.connect();
-        //console.log(connection.db(this.db).collection(this.collection));
-        this.mConnection = await connection.db(this.db).collection(this.collection);
+        let connection;
+
+        while ( connection == undefined || connection == null ) {
+            try {
+                connection = await this.mClient.connect();
+                //console.log(connection.db(this.db).collection(this.collection));
+                this.mConnection = await connection.db(this.db).collection(this.collection);
+            } catch (err) {
+                console.log(err);
+            }
+        }
 
     }
 

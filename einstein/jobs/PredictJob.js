@@ -3,29 +3,29 @@ const EinsteinService = require('./../EinsteinService');
 
 module.exports = function(agenda) {
     try {
-        console.log('came in predict');
-        console.log(agenda);
+
+
         agenda.define('PredictJob', async function(job, done) {
-            console.log('came in predict 2');
+            console.log('EINSTEIN APP: Starting Agenda queue processing...');
                 // Connect to the db
                 const db = new MDB();
                 db.setDb('SignatureStatus_db');
                 db.setCollection('SignatureStatus_c');
                 await db.connect();
-                console.log(job.attrs.data);
+
                 const result = await db.query({ _id: { $in: job.attrs.data.xdata }});
-                console.log('came in predict 3');
+
                 result.forEach(
                     async (doc) => {
 
-                        try{
-                            console.log('came in predict 4');
+                        try {
+                            console.log('EINSTEIN APP: Predicting signature of Account: '+doc.AccountId+ ' on '+doc.ObjectName+ ' with Id: ' + doc.ObjectId);
+                            
                             let service = new EinsteinService();
                             let match = await service.predict(doc);
-                            console.log('came in predict 5');
-                            console.log(match);
-                            if ( match ) {
 
+                            if ( match ) {
+                                console.log('EINSTEIN APP: Match found...');
                                 doc.MatchAccuracy = match.probability;
                                 doc.SignatureBase64 = '';
                                 if ( match.probability > 0.9 ) {
@@ -33,13 +33,21 @@ module.exports = function(agenda) {
                                 } else {
                                     doc.Status = 'INVALID';
                                 }
-
-                            
-                            
+                     
                                 // update in mongo
-                                console.log(doc);
+
                                 await db.update([doc]);
                                 //await db.delete([doc]);
+                            } else {
+
+                                console.log('EINSTEIN APP: Match NOT found...'); 
+                                doc.MatchAccuracy = 0;
+                                doc.SignatureBase64 = '';
+                                doc.Status = 'INVALID';
+                                // update in mongo
+
+                                await db.update([doc]);
+
                             }
 
                             //post to salesforce
@@ -51,7 +59,7 @@ module.exports = function(agenda) {
                         
                     }
                 );
-
+                console.log('EINSTEIN APP: Batch processing completed...'); 
                 done();
 
         });

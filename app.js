@@ -45,20 +45,24 @@ app.post('/', async function (req, res) {
             return;
         }
 
+        console.log('EINSTEIN APP: Records verified...');
+
         let result = await new BatchService(
             obj.records
             ).start();
         
         if ( result ) {
+            console.log('EINSTEIN APP: Request completed...');
             res.status(200).json(result);
             res.end();
         } else {
+            console.log('EINSTEIN APP: Request error...');
             res.status(500).send('ERROR: Could not save records to DB, please try again.');
         }
 
     } catch ( err ) {
 
-        //console.log(err);
+        console.log('EINSTEIN APP: Request error...');
 
         res.send(err);
 

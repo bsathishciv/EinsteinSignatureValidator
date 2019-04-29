@@ -11,12 +11,16 @@ class EinsteinRequest {
     constructor( url, context ){
         this.url = url;
         this.token = fs.readFileSync( __dirname + '/data/einstein_accessToken.txt', 'utf8');
+        this.loadDefaultHeaders();
+        this.context = context;
+    }
+
+    loadDefaultHeaders(){
         this.defaultHeaders = {
             'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${this.token}`,
             'Cache-Control': 'no-cache' 
         };
-        this.context = context;
     }
 
     datax(formData) {
@@ -65,7 +69,7 @@ class EinsteinRequest {
             .on(
                 'data', 
                 (data) => {
-                    console.log(data);
+                    //console.log(data);
                     resolve(this.processData(data));
                 }
             );
@@ -82,7 +86,7 @@ class EinsteinRequest {
 
         if(resp.statusCode == 401 || resp.statusCode == 500 ){
             await this.getAccessToken();
-            console.log(this.token);
+            //console.log(this.token);
             this.postx(); // retry
             return 1;
         } else {
@@ -97,13 +101,14 @@ class EinsteinRequest {
 
             const body = JSON.parse(chunk);
             const accessToken = body["access_token"];
-            console.log('----------->'+accessToken);
-            fs.writeFile(
+            //console.log('----------->'+accessToken);
+            fs.writeFileSync(
                 __dirname + '/data/einstein_accessToken.txt', 
-                accessToken,
-                (err) => { console.log(err)}
+                accessToken
             );
 
+            this.token = accessToken;
+            this.loadDefaultHeaders();
 
             return;
 
@@ -143,7 +148,7 @@ class EinsteinRequest {
 
         const postData = `grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=${token}`;
 
-        console.log(postData);
+        //console.log(postData);
 
         await new EinsteinRequest('https://api.einstein.ai/v2/oauth2/token', 'AUTH')
             .datax(postData)

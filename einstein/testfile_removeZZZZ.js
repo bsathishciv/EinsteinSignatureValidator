@@ -15,7 +15,7 @@ async function ni (){
 
     console.log(await db.mConnection.deleteMany(
         {
-            AccountId : '000001'
+            name : 'PredictJob'
         }
     ));
 

@@ -17,7 +17,7 @@ class Agendax {
 
         return new Promise( async (resolve, reject ) => {
 
-            console.log(' befor invoking  agenda');
+            console.log('EINSTEIN APP: Setting Agenda');
 
             this.agenda = await new Agenda(
                 { db: 
@@ -41,13 +41,8 @@ class Agendax {
 
     startx() {
 
-        console.log('AGENDA Start: Starting Job in Mongo');
-        console.log(this.data);
         let job = this.agenda.now(this.types[0], { xdata : this.data });
         this.agenda.start();
-        console.log('>>>>>>>>');
-        console.log(job);
-        console.log('AGENDA end: '+ job);
 
     }
 
@@ -63,12 +58,11 @@ class Agendax {
     }
 
     loadJob(type) {
-        console
-        .log('came in load');
+
+        console.log('EINSTEIN APP: loading jobs into Agenda...');
         this.types.push(type);
         try {
             require('./jobs/PredictJob')(this.agenda);
-            console.log('done');
         } catch (err) {
             console.log(err);
         }
