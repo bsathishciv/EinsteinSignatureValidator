@@ -51,28 +51,28 @@ class EinsteinRequest {
                 };
             }
             request.post(
-                attr
-            )
-            .on(
-                'response', 
-                async (resp) => {
-                    console.log(resp.statusCode);
-                    console.log(resp.statusMessage);
-                    let exitcode = await this.processResponse(resp);
-                    if ( exitcode ) {
-                        //resolve();
-                    } else {
-                        //reject();
+                attr,
+                async ( err, resp, body ) => {
+                    console.log(this.context);
+                    if ( resp && resp.statusCode != 401 ) {
+
+                        //console.log('<<>> '+ resp.statusCode);
+                        if ( body ) {
+                            await this.processData(body);
+                            resolve();
+                        }
+
+                    } else if ( resp && resp.statusCode == 401 ) {
+                        //console.log(' ---- '+ resp.statusCode);
+                        await this.processResponse(resp);
+                        // re-process with new access token
+                        this.token = fs.readFileSync( __dirname + '/data/einstein_accessToken.txt', 'utf8');
+                        this.loadDefaultHeaders();
+                        await this.postx();
+                        resolve();
                     }
                 }
             )
-            .on(
-                'data', 
-                (data) => {
-                    //console.log(data);
-                    resolve(this.processData(data));
-                }
-            );
 
         });
 
@@ -87,7 +87,7 @@ class EinsteinRequest {
         if(resp.statusCode == 401 || resp.statusCode == 500 ){
             await this.getAccessToken();
             //console.log(this.token);
-            this.postx(); // retry
+            
             return 1;
         } else {
             return 0;
