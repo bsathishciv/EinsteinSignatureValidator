@@ -74,10 +74,8 @@ class MDB {
                     } else {
 
                         let result = await this.mConnection.insertMany(records);
-                        let tempArr = [];
-                        tempArr.concat(Object.values(result.insertedIds));
 
-                        resolve(tempArr);
+                        resolve(Object.values(result.insertedIds));
                     }
 
                     reject('INSERT_ERROR: Failed to insert records');
