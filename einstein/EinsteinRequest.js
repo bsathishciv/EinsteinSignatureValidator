@@ -119,7 +119,8 @@ class EinsteinRequest {
             if (! body.probabilities || body.probabilities.length == 0){
                 return 0;
             }
-
+            console.log(body.probabilities);
+            console.log(body.probabilities[0]);
             return body.probabilities[0];
             
         }
