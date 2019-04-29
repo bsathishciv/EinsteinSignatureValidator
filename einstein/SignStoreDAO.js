@@ -70,12 +70,14 @@ class MDB {
                     if ( records.length == 1 ) {
                         //console.log('1');
                         let result = await this.mConnection.insertOne(records[0]);
-                        resolve(result.insertedId);
+                        resolve([result.insertedId]);
                     } else {
-                        //console.log('2');
+
                         let result = await this.mConnection.insertMany(records);
-                        console.log('-*-*-*-*-$-$-$-$: '+result);
-                        resolve(result.insertedIds);
+                        let tempArr = [];
+                        tempArr.concat(Object.values(result.insertedIds));
+
+                        resolve(tempArr);
                     }
 
                     reject('INSERT_ERROR: Failed to insert records');

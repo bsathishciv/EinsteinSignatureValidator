@@ -40,10 +40,8 @@ class BatchService {
 
             let ag = new Agendax();
             await ag.connection();
-            console.log('-*-*-*-*-: '+result);
-            console.log('-*-*-*-*-: '+Object.keys(result));
-            console.log('-*-*-*-*-: '+Object.keys(result));
-            ag.setData([result]);
+
+            ag.setData(result);
             ag.loadJob('PredictJob');
             ag.startx(); // runs job in background process
             console.log(' --------- EINSTEIN APP: Batch Queued...');
