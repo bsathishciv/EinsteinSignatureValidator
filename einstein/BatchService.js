@@ -20,7 +20,7 @@ class BatchService {
                 )
             );
         }
-        
+
         this.recordArr = SignatureStatusArray;
 
     }
@@ -40,7 +40,7 @@ class BatchService {
 
             let ag = new Agendax();
             await ag.connection();
-
+            console.log('-*-*-*-*-: '+result);
             ag.setData([result]);
             ag.loadJob('PredictJob');
             ag.startx(); // runs job in background process
