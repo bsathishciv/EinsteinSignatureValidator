@@ -74,6 +74,7 @@ class MDB {
                     } else {
                         //console.log('2');
                         let result = await this.mConnection.insertMany(records);
+                        console.log('-*-*-*-*-$-$-$-$: '+result);
                         resolve(result.insertedIds);
                     }
 
