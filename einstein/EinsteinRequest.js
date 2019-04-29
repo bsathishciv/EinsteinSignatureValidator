@@ -115,7 +115,7 @@ class EinsteinRequest {
         } else if ( this.context == 'PREDICT' ) {
 
             const body = JSON.parse(chunk);
-
+            console.log(body);
             if (! body.probabilities || body.probabilities.length == 0){
                 return 0;
             }
