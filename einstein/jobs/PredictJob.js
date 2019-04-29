@@ -21,7 +21,7 @@ module.exports = function(agenda) {
                         
                         let service = new EinsteinService();
                         let match = await service.predict(doc);
-
+                        console.log(match);
                         if ( match ) {
                             console.log(' --------- EINSTEIN APP: Match found...');
                             doc.MatchAccuracy = match.probability;
