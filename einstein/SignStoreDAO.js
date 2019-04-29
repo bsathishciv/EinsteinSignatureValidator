@@ -68,12 +68,12 @@ class MDB {
                     }
 
                     if ( records.length == 1 ) {
-                        console.log('1');
+                        //console.log('1');
                         let result = await this.mConnection.insertOne(records[0]);
                         resolve(result.insertedId);
                     } else {
-                        console.log('2');
-                        let result = await this.mConnection.insertAll(records);
+                        //console.log('2');
+                        let result = await this.mConnection.insertMany(records);
                         resolve(result.insertedIds);
                     }
 
