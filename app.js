@@ -1,5 +1,6 @@
 // exports
 const express = require('express');
+const basicAuth = require('express-basic-auth')
 const bodyParser = require('body-parser');
 const MDB = require('./einstein/SignStoreDAO');
 const BatchService = require('./einstein/BatchService');
@@ -23,6 +24,10 @@ app.get('/', async function (req, res) {
     res.status(200).json(result);
 
 });
+
+app.use(basicAuth({
+    users: { 'sathish': 'Rspwcsciv@5' }
+}));
 
 app.use(function(req, res, next){
     var data = "";
