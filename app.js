@@ -26,7 +26,9 @@ app.get('/', async function (req, res) {
 });
 
 app.use(basicAuth({
-    users: { 'sathish': 'Rspwcsciv@5' }
+    users: { 'sathish': 'Rspwcsciv@5' },
+    challenge: true,
+    realm: 'EINSTEIN',
 }));
 
 app.use(function(req, res, next){
